@@ -1,0 +1,20 @@
+doctype html
+html
+    head
+        title='Homepage'
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        h1 Homepage
+        div.navButton
+            a(href="/update-cobj") Add/Update this table
+        table.table-cats
+            tr
+                th Name
+                th Breed
+                th Weight
+            each val in response
+              tr
+                td= val.properties.name
+                td= val.properties.breed
+                td= val.properties.weight
