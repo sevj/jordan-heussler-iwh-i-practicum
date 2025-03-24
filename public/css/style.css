@@ -10,37 +10,47 @@ h1 {
     margin: 1rem;
 }
 
+.navButton {
+    text-align: center;
+    background-color: #04AA6D;
+    color: white;
+    border:none;
+    width: 256px;
+    padding: 1em;
+    margin-left: 1em;
+}
+
+.navButton a {
+    text-decoration: none;
+}
+
+input[type='submit'].navButton {
+    margin-top:24px;
+    margin-left: 0;
+}
+
 .form-wrapper {
     font-size: 18px;
     max-width: 768px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border: solid 1px lightgrey;
-    border-radius: 15px;
-    box-shadow: 3px 2px 6px lightgrey;
+    padding: 1em;
 }
 
-label, input {
+label, input, select {
     margin-top: 5px;
     display: block;
     font-size: inherit;
+    width:256px;
 }
 
 input[type="text"] {
     padding: .25rem;
 }
 
-input[type="submit"] {
-    background-color: lightgrey;
-    border: none;
-    padding: .375rem 1rem;
-    margin-top: 10px;
-}
-
 .table-cats {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    margin: 1em;
 }
 
 .table-cats td, .table-cats th {
