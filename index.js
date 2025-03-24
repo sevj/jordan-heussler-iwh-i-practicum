@@ -4,7 +4,7 @@ const app = express();
 const pug = require('pug');
 const dotenv = require('dotenv');
 
-const formView = pug.compileFile('views/updates.pug');
+
 
 dotenv.config();
 
@@ -17,8 +17,40 @@ app.use(express.json());
 // * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
 const PRIVATE_APP_ACCESS = process.env.API_KEY;
 
-app.get('/', (req, res) => {
-    res.send('hello world')
+const customObjectId = process.env.CUSTOM_OBJECT_ID;
+
+const customObjectGetUrl = 'https://api.hubspot.com/crm/v3/objects/' + customObjectId;
+const customObjectPostUrl = 'https://api.hubspot.com/crm/v3/objects/' + customObjectId;
+
+const formView = pug.compileFile('views/updates.pug');
+const homepageView = pug.compileFile('views/homepage.pug');
+
+
+app.get('/', async (req, res) => {
+    const properties = [
+        'breed',
+        'weight',
+        'name'
+    ];
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    }
+
+    const params = 'properties=' + properties.join('&properties=') + '&limit=100';
+    const url = customObjectGetUrl + '?' + params;
+
+    try {
+        const resp = await axios.get(url, { headers });
+        const response = resp.data.results;
+
+        res.send(homepageView({
+            response: response
+        }))
+
+    } catch (error) {
+        console.error(error);
+    }
 })
 
 app.get('/update-cobj', (req, res) => {
@@ -27,54 +59,30 @@ app.get('/update-cobj', (req, res) => {
     }))
 })
 
-app.post('/update-cobj', (req, res) => {
-    console.log(req.body)
-})
+app.post('/update-cobj', async (req, res) => {
+    const body = req.body;
 
-/** 
-* * This is sample code to give you a reference for how you should structure your calls. 
-
-* * App.get sample
-app.get('/contacts', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     }
-    try {
-        const resp = await axios.get(contacts, { headers });
-        const data = resp.data.results;
-        res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
-    } catch (error) {
-        console.error(error);
-    }
-});
 
-* * App.post sample
-app.post('/update', async (req, res) => {
-    const update = {
+    const data = {
         properties: {
-            "favorite_book": req.body.newVal
+            'name': body.name,
+            'weight': body.weight,
+            'breed': body.breed
         }
     }
 
-    const email = req.query.email;
-    const updateContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email`;
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    };
+    try {
+        const resp = await axios.post(customObjectPostUrl, data, { headers });
 
-    try { 
-        await axios.patch(updateContact, update, { headers } );
-        res.redirect('back');
-    } catch(err) {
-        console.error(err);
+        res.redirect('/')
+    } catch (error) {
+        console.error(error);
     }
-
-});
-*/
-
+})
 
 // * Localhost
 app.listen(3000, () => console.log('Listening on http://localhost:3000'));

@@ -6,20 +6,21 @@ html
         link(rel="stylesheet", href="/css/style.css")
     body
         h1 Add cat
-        form(id="update-cobj" action="/update-cobj" method="POST")
-            div.form-group
-                label(for="name") Name:
-                input(id="name" type="text" name="name" required)
-            div.form-group
-                label(for="weight") Weight:
-                input(id="weight" type="number" name="weight" required)
-            div.form-group
-                label(for="breed") Breed:
-                select(id="breed" name="breed" required)
-                    option(value='mainecoon') Maine-coon
-                    option(value='britishshorthair') British Shorthair
-                    option(value='ragdoll') Ragdoll
-            input(type="submit" value="Submit")
+        div.form-wrapper
+            form(id="update-cobj" action="/update-cobj" method="POST")
+                div.form-group
+                    label(for="name") Name:
+                    input(id="name" type="text" name="name" required)
+                div.form-group
+                    label(for="weight") Weight:
+                    input(id="weight" type="number" name="weight" required)
+                div.form-group
+                    label(for="breed") Breed:
+                    select(id="breed" name="breed" required)
+                        option(value='mainecoon') Maine-coon
+                        option(value='britishshorthair') British Shorthair
+                        option(value='ragdoll') Ragdoll
+                input(type="submit" value="Submit")
         div.NavButtons
             a(href="/")
                 div.NavButton Return to the homepage
